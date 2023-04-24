@@ -48,7 +48,7 @@ def split(df, group):
     return [data(filename, gb.get_group(x)) for filename, x in zip(gb.groups.keys(), gb.groups)]
 
 
-def create_tf_example(group, path):
+def create_tf_example(i, group, path):
     with tf.gfile.GFile(os.path.join(path, '{}'.format(group.filename)), 'rb') as fid:
         encoded_jpg = fid.read()
     encoded_jpg_io = io.BytesIO(encoded_jpg)
@@ -76,7 +76,7 @@ def create_tf_example(group, path):
         'image/height': dataset_util.int64_feature(height),
         'image/width': dataset_util.int64_feature(width),
         'image/filename': dataset_util.bytes_feature(filename),
-        'image/source_id': dataset_util.bytes_feature(filename),
+        'image/source_id': dataset_util.bytes_feature(str(i).encode('utf8')),
         'image/encoded': dataset_util.bytes_feature(encoded_jpg),
         'image/format': dataset_util.bytes_feature(image_format),
         'image/object/bbox/xmin': dataset_util.float_list_feature(xmins),
@@ -94,9 +94,11 @@ def generate_tf_records(csv_input, output_path, image_dir):
     path = os.path.join(image_dir)
     examples = pd.read_csv(csv_input)
     grouped = split(examples, 'filename')
+    i = 0
     for group in grouped:
-        tf_example = create_tf_example(group, path)
+        tf_example = create_tf_example(i, group, path)
         writer.write(tf_example.SerializeToString())
+        i = i + 1
 
     writer.close()
     output_path = os.path.join(os.getcwd(), output_path)
