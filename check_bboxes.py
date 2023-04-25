@@ -22,6 +22,7 @@ def get_bbox_aspect_ratio(csv_file):
             asp_ratio = (float(xmax) - float(xmin)) / (float(ymax) - float(ymin))
             all.append(asp_ratio)
             aspect_ratios[cls].append(asp_ratio)
+    plt.clf()
     plt.hist(numpy.array(all), range=[0, 3])
     plt.title('All')
     if not os.path.exists('hist'):
