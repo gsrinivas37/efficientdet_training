@@ -1,4 +1,5 @@
 """
+#Credits: https://github.com/msmccor100/Orchid-Pollinator-Detection.git
 Given a the path to a directory containing a COCO formated dataset (i.e. containing images and 
 an _annotations.coco.json file), this routine creates a new directory with the suffix _bb 
 containing images with bounding boxes drawn in.

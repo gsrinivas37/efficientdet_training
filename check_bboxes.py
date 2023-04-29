@@ -24,15 +24,15 @@ def get_bbox_aspect_ratio(csv_file):
             aspect_ratios[cls].append(asp_ratio)
     plt.clf()
     plt.hist(numpy.array(all), range=[0, 3])
-    plt.title('All')
-    if not os.path.exists('hist'):
-        os.mkdir('hist')
-    plt.savefig('hist/all.png')
+    plt.title(f'All: Avg: {np.round(np.mean(numpy.array(all)),2)}')
+    if not os.path.exists('histogram'):
+        os.mkdir('histogram')
+    plt.savefig('histogram/all.png')
     for keys in aspect_ratios:
         plt.clf()
         plt.hist(numpy.array(aspect_ratios[keys]), range=[0, 3])
-        plt.title(keys)
-        plt.savefig(f'hist/{keys}.png')
+        plt.title(f'{keys}: Avg: {np.round(np.mean(numpy.array(aspect_ratios[keys])),2)}')
+        plt.savefig(f'histogram/{keys}.png')
 
 
 def check_bboxes(csv_file, img_dir, out_dir, max_cnt=50):
